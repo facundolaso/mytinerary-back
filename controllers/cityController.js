@@ -7,7 +7,8 @@ const cityController = {
             let cities = await City.find()
             if(cities){
                 res.status(200).json({
-                    response: {city}
+                    response: {cities},
+                    success: true,
                 })
 
             } else{
@@ -31,7 +32,8 @@ const cityController = {
             let city = await City.findOne({_id:id})
             if(city){
                 res.status(200).json({
-                    response: city
+                    response: city,
+                    success: true,
                 })
             } else {
                 res.status(404).json({
@@ -54,20 +56,22 @@ const cityController = {
             const newCity = await new City(req.body).save()
             if (newCity) {
                 res.status(201).json({
-                    response: City.id
+                    response: City.id,
+                    success: true,
                 })                
             } else {
                 res.status(404).json({
                     message: "could't create city",
-                    success: false
+                    success: false,
                 })               
             }       
         } catch (error) {
             console.log(error)
             res.status(400).json({
                 message: "error",
-                success: false
+                success: false,
             })
         }       
     }
 }
+module.exports = cityController
