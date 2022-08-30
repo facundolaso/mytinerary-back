@@ -3,8 +3,15 @@ const City = require('../models/City')
 const cityController = {
     readAll: async (req, res) => {
 
+        let query = {}
+
+        if (req.query.city) {
+            query.city = req.query.city
+        }
+
         try {
-            let cities = await City.find()
+            let cities = await City.find(query)
+
             if (cities.length > 0) {
                 res.status(200).json({
                     response: { cities },
