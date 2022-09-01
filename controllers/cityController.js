@@ -4,6 +4,7 @@ const cityController = {
     readAll: async (req, res) => {
 
         let query = {}
+        let filterCity
 
         if (req.query.city) {
             query.city = req.query.city
@@ -11,17 +12,18 @@ const cityController = {
 
         try {
             let cities = await City.find(query)
+            filterCity = await City.find({city: {$regex : "^" + query.city}}).exec()
 
-            if (cities.length > 0) {    
+            if (filterCity.length > 0) {    
                 res.status(200).json({
-                    response: { cities },
+                    response:  filterCity ,
                     success: true,
                 })
 
             } else {
-                res.status(404).json({
-                    message: "could't find cities",
-                    success: false
+                res.status(200).json({
+                    response:  cities ,
+                    success: true,
                 })
             }
         } catch (error) {
@@ -30,7 +32,6 @@ const cityController = {
                 message: "error",
                 success: false
             })
-
         }
     },
     readOne: async (req, res) => {
