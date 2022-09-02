@@ -25,9 +25,9 @@ User.create(
     {
         "name": "Facundo",
         "lastName": "Laso",
-        "mail": "asdasda@asdasd.com",
-        "password": "jajaj1234",
-        "photo": "dsadasdas",
+        "mail": "sadasdasd@asdasd.com",
+        "password": "asdasd2321",
+        "photo": "asdasd434",
         "country" : "Argentina"
     }
 )
