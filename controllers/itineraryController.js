@@ -24,20 +24,25 @@ const itineraryController = {
             query.city = req.query.city
         }
 
+        if (req.query.user) {
+            query.user = req.query.user
+        }
+
         try {
             let itineraries = await Itinerary.find(query)
-                .populate('user', { name: 1})
-                .populate('city', { city:1})
+                .populate('user', { name: 1 })
+                .populate('city', { city: 1 })
 
-                res.status(200).json({
-                    response:  itineraries ,
-                    success: true,
-                })
+            res.status(200).json({
+                response: itineraries,
+                success: true,
+
+            })
 
         } catch (error) {
             console.log(error)
-            res.status(400).json({
-                message: "error",
+            res.status(404).json({
+                message: "Itinerary not found",
                 success: false
             })
         }
@@ -46,7 +51,7 @@ const itineraryController = {
         const { id } = req.params
         const updatedItinerary = req.body
         try {
-            let itinerary = await Itinerary.findOneAndUpdate({ _id: id }, updatedItinerary,{ new: true })
+            let itinerary = await Itinerary.findOneAndUpdate({ _id: id }, updatedItinerary, { new: true })
             if (itinerary) {
                 res.status(200).json({
                     success: true,
