@@ -19,32 +19,21 @@ const itineraryController = {
     readAll: async (req, res) => {
 
         let query = {}
-        let filterItinerary
 
-        if (req.query._id) {
-            query._id = req.query._id
+        if (req.query.city) {
+            query.city = req.query.city
         }
 
         try {
             let itineraries = await Itinerary.find(query)
                 .populate('user', { name: 1})
                 .populate('city', { city:1})
-                
-            filterItinerary = await Itinerary.find( {city : query._id})
-                .populate('user', { name: 1})
-                .populate('city', { city:1})
 
-            if (filterItinerary.length > 0) {    
-                res.status(200).json({
-                    response:  filterItinerary ,
-                    success: true,
-                })
-            } else {
                 res.status(200).json({
                     response:  itineraries ,
                     success: true,
                 })
-            }
+
         } catch (error) {
             console.log(error)
             res.status(400).json({
