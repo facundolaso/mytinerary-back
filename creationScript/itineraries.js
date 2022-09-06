@@ -7,8 +7,8 @@ const Itinerary = require('../models/Itinerary')
 Itinerary.create(
     {
         "name": "Museum Trip",
-        "user": "Facundo",
-        "city": "Manhattan",
+        "user": "63164a517bfd9487c2451607",
+        "city": "631648d218dca7921749d119",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -16,8 +16,8 @@ Itinerary.create(
     },
     {
         "name": "Museum Trip",
-        "user": "Engelberth",
-        "city": "Hong Kong",
+        "user": "63164a517bfd9487c2451606",
+        "city": "631648d218dca7921749d11a",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -25,8 +25,8 @@ Itinerary.create(
     },
     {
         "name": "Museum Trip",
-        "user": "Joaquin",
-        "city": "Rio de Janeiro",
+        "user": "63164a517bfd9487c2451605",
+        "city": "631648d218dca7921749d11b",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -34,8 +34,8 @@ Itinerary.create(
     },
     {
         "name": "City Trip",
-        "user": "Joaquin",
-        "city": "London",
+        "user": "63164a517bfd9487c2451605",
+        "city": "631648d218dca7921749d11c",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -43,8 +43,8 @@ Itinerary.create(
     },
     {
         "name": "BigBen Tour",
-        "user": "Facundo",
-        "city": "London",
+        "user": "63164a517bfd9487c2451607",
+        "city": "631648d218dca7921749d11c",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -52,8 +52,8 @@ Itinerary.create(
     },
     {
         "name": "Monte Fuji Tour",
-        "user": "Engelberth",
-        "city": "Japan",
+        "user": "63164a517bfd9487c2451606",
+        "city": "631648d218dca7921749d118",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -61,8 +61,8 @@ Itinerary.create(
     },
     {
         "name": "Nagasaki Tour",
-        "user": "Joaquin",
-        "city": "Japan",
+        "user": "63164a517bfd9487c2451605",
+        "city": "631648d218dca7921749d118",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -70,8 +70,8 @@ Itinerary.create(
     },
     {
         "name": "Center Tour",
-        "user": "Joaquin",
-        "city": "Singapore",
+        "user": "63164a517bfd9487c2451605",
+        "city": "631648d218dca7921749d11f",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
@@ -79,8 +79,8 @@ Itinerary.create(
     },
     {
         "name": "StripClub",
-        "user": "Engelberth",
-        "city": "Singapore",
+        "user": "63164a517bfd9487c2451606",
+        "city": "631648d218dca7921749d11f",
         "price": 150,
         "likes": ["cualquiera"],
         "tags": ["cualquiera"],
