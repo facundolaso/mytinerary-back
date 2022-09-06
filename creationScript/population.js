@@ -1,8 +1,8 @@
 require('dotenv').config()
 
-require('./config/database')
+require('../config/database')
 
-const City = require('./models/City')
+const City = require('../models/City')
 
     City.create({
         city: "Barcelona",
@@ -15,7 +15,7 @@ const City = require('./models/City')
         city: "Tokio",
         country: "Japan",
         photo: "https://images.pexels.com/photos/2303337/pexels-photo-2303337.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        population: "14000000",
+        population: 14000000,
         fundation: "1457",
     },
     {
