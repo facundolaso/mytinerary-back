@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const crypto = require('crypto')
 const bcryptjs = require('bcryptjs')
-// const sendMail = require('./sendMail')
+const sendMail = require('./sendMail')
 
 
 const userController = {
@@ -31,7 +31,7 @@ const userController = {
                 if(from=='form'){
                     password = bcryptjs.hashSync(password,10)
                     user = await new User ({name,lastName,country,photo,mail,password:[password],role,from:[from],logged,verified,code}).save()
-                    // sendMail(mail,code)
+                    sendMail(mail,code)
                     res.status(201).json({
                         message: "user signed up from form",
                         success: true,
