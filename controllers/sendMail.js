@@ -34,7 +34,7 @@ const sendMail = async(mail,code) => {
         html: 
         `<div>
             <h1>Hola ${mail}</h1>
-            <a href='http://localhost:4000/auth/verify/${code}'>click to verify!</a>
+            <a href='http://localhost:4000/auth/verification/${code}'>click to verify!</a>
         </div>`
     }
     await transport.sendMail(mailOptions, (error,response)=>{
