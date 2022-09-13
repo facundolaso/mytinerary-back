@@ -57,7 +57,7 @@ const userController = {
                 }else{
                     user.from.push(from)
                     user.verified = true
-                    password = bcryptjs.hashSync(pass,10)
+                    password = bcryptjs.hashSync(password,10)
                     user.password.push(password)
                     await user.save()
                     res.status(201).json({
@@ -118,6 +118,81 @@ const userController = {
                 message: "could't verify account",
                 success: false
             })
+        }
+    },
+    signIn: async(req,res) => {
+
+        const {mail, password, from} = req.body        
+        try { 
+            let user = await User.findOne({mail})
+            if (!user) { 
+                res.status(404).json({
+                    message: "user not found, please sign up",
+                    success: false,
+                })                      
+            }else if(user.verified) { 
+                const verifyPassword = user.password.filter(passwordElement => bcryptjs.compareSync(password, passwordElement))
+                if (from == 'form') {
+                    if (verifyPassword.length > 0) { 
+                        const logedUser = {
+                            id: user._id,
+                            name: user.name,
+                            mail: user.mail,
+                            role: user.role,
+                            photo: user.photo
+                        }
+                        user.logged = true
+                        await user.save()
+                        
+                        res.status(200).json({
+                            success: true,
+                            response: {user: logedUser},
+                            message: 'Welcome ' + user.name
+                        })
+                    } else {
+                        res.status(400).json({
+                            message: "Username or password incorrect",
+                            success: false
+                        })                      
+                    }
+                    
+                } else { 
+                    if (verifyPassword.length > 0) { 
+                        const logedUser = {
+                            id: user._id,
+                            name: user.name,
+                            mail: user.mail,
+                            role: user.role,
+                            photo: user.photo
+                        }
+                        user.logged = true
+                        await user.save()
+                        
+                        res.status(200).json({
+                            success: true,
+                            response: {user: logedUser},
+                            message: 'Welcome '+ user.name
+                        })
+                    } else { 
+                        res.status(400).json({
+                            message: "Invalid credentials",
+                            success: false
+                        })                      
+                    }
+                    
+                }              
+            }else{ 
+                res.status(401).json({
+                    message: "Please, verify your email account and try again",
+                    success: false
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "ERROR, try again",
+                success: false
+            })            
         }
     }
 }
