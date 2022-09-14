@@ -2,20 +2,31 @@ const User = require('../models/User')
 const crypto = require('crypto')
 const bcryptjs = require('bcryptjs')
 const sendMail = require('./sendMail')
+const Joi = require('joi')
+
+const userValidator = Joi.object({
+    "name": Joi.string().min(1).max(30).message('INVALID_NAME'),
+    "lastName":  Joi.string().min(1).max(30).message('INVALID_LASTNAME'),
+    "mail": Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).message('INVALID_MAIL'),
+    "password": Joi.string().min(8).max(30).message('INVALID_PASSWORD'),
+    "photo":  Joi.string().uri().message('INVALID_URL'),
+    "country" : Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
+    "from": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
+    "role": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
+})
 
 
 const userController = {
     create: async (req, res) => {
         try {
-            console.log(req.body)
-
-            const newUser = await new User(req.body).save()
+            
+            await new User(req.body).save()
             res.status(201).json({
                 success: true,
             })
         } catch (error) {
             res.status(400).json({
-                message: "could't create user",
+                message: error.message,
                 success: false,
             })
         }
@@ -23,6 +34,7 @@ const userController = {
     signUp: async(req,res) => {
         let{name, photo, mail, password, role, from, country, lastName} = req.body
         try {
+            await userValidator.validateAsync(req.body)
             let user = await User.findOne({mail})
             if(!user){
                 let logged = false
@@ -69,7 +81,7 @@ const userController = {
         } catch(error) {
             console.log(error)
             res.status(400).json({
-                message: "could't signed up",
+                message: error.message,
                 success: false
             })
         }
