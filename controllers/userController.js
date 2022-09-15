@@ -47,7 +47,7 @@ const userController = {
                     user = await new User({ name, lastName, country, photo, mail, password: [password], role, from: [from], logged, verified, code }).save()
                     sendMail(mail, code)
                     res.status(201).json({
-                        message: "user signed up from form",
+                        message: user.name + " signed up from form, please verify your email",
                         success: true,
                     })
 
@@ -56,7 +56,7 @@ const userController = {
                     let verified = true
                     user = await new User({ name, lastName, country, photo, mail, password: [password], role, from: [from], logged, verified, code }).save()
                     res.status(201).json({
-                        message: "user signed up from form",
+                        message: user.name + " signed up from "+ user.from,
                         success: true,
                     })
 
@@ -64,7 +64,7 @@ const userController = {
             } else {
                 if (user.from.includes(from)) {
                     res.status(200).json({
-                        message: "user already exist",
+                        message: "user already exist, please sign In",
                         success: false,
                     })
 
@@ -75,7 +75,7 @@ const userController = {
                     user.password.push(password)
                     await user.save()
                     res.status(201).json({
-                        message: "user signed up from " + from,
+                        message: user.name + " signed up from "+ user.from,
                         success: true
                     })
                 }
@@ -224,7 +224,10 @@ const userController = {
             } else {
                     user.logged = false
                     await user.save()
-                    res.redirect(200,'/')
+                    res.status(404).json({
+                        message: "See you soon " + user.name,
+                        success: true,
+                    })
             } 
         } catch (error) {
             console.log(error)

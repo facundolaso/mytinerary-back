@@ -76,6 +76,7 @@ const cityController = {
             const newCity = await new City(req.body).save()
             res.status(201).json({
                 response: newCity.id,
+                message: "successfully created city!!",
                 success: true,
             })
         } catch (error) {
@@ -91,6 +92,7 @@ const cityController = {
             let city = await City.findOneAndRemove({ _id: id })
             if (city) {
                 res.status(200).json({
+                    message: "city ​​successfully removed!!",
                     success: true,
                 })
             } else {
@@ -118,6 +120,7 @@ const cityController = {
             if (city) {
                 res.status(200).json({
                     response: city,
+                    message: "successfully updated city!!",
                     success: true,
                 })
             } else {

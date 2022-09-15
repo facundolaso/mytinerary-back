@@ -17,6 +17,7 @@ const itineraryController = {
 
             await new Itinerary(req.body).save()
             res.status(201).json({
+                message: "itinerary created successfully!!",
                 success: true,
             })
         } catch (error) {
@@ -64,6 +65,7 @@ const itineraryController = {
             let itinerary = await Itinerary.findOneAndUpdate({ _id: id }, updatedItinerary, { new: true })
             if (itinerary) {
                 res.status(200).json({
+                    message: "itinerary updated successfully!!",
                     success: true,
                 })
             } else {
@@ -86,6 +88,7 @@ const itineraryController = {
             let itinerary = await Itinerary.findOneAndRemove({ _id: id })
             if (itinerary) {
                 res.status(200).json({
+                    message: "itinerary deleted successfully!!",
                     success: true,
                 })
             } else {
