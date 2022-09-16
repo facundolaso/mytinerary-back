@@ -10,7 +10,7 @@ const userValidator = Joi.object({
     "mail": Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).message('INVALID_MAIL'),
     "password": Joi.string().min(8).max(30).message('INVALID_PASSWORD'),
     "photo":  Joi.string().uri().message('INVALID_URL'),
-    "country" : Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
+    "country" : Joi.string().max(20).message('INVALID_COUNTRY'),
     "from": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
     "role": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
 })
@@ -224,7 +224,7 @@ const userController = {
             } else {
                     user.logged = false
                     await user.save()
-                    res.status(404).json({
+                    res.status(200).json({
                         message: "See you soon " + user.name,
                         success: true,
                     })
