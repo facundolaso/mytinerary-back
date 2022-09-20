@@ -1,17 +1,28 @@
 const Itinerary = require('../models/Itinerary')
+const Joi = require('joi')
 
+const itinerayValidator = Joi.object({
+    "name": Joi.string().min(4).max(20).message('INVALID_NAME') ,
+    "user": Joi.string().min(4).max(50).message('INVALID_USER'),
+    "city":  Joi.string().min(4).max(50).message('INVALID_CITY'),
+    "price": Joi.number().min(0).max(30000).message('INVALID_PRICE') ,
+    "likes": Joi.array().items(Joi.number().integer().message('INVALID_LIKES') ),
+    "tags": Joi.array().items(Joi.string().max(30).message('MAX_30_TAGS')),
+    "duration": Joi.number().integer().message('INVALID_DURATION')
+})
 const itineraryController = {
     create: async (req, res) => {
         try {
-            console.log(req.body)
+            await itinerayValidator.validateAsync(req.body)
 
             await new Itinerary(req.body).save()
             res.status(201).json({
+                message: "itinerary created successfully!!",
                 success: true,
             })
         } catch (error) {
             res.status(400).json({
-                message: "could't create itinerary",
+                message: error.message,
                 success: false,
             })
         }
@@ -54,6 +65,7 @@ const itineraryController = {
             let itinerary = await Itinerary.findOneAndUpdate({ _id: id }, updatedItinerary, { new: true })
             if (itinerary) {
                 res.status(200).json({
+                    message: "itinerary updated successfully!!",
                     success: true,
                 })
             } else {
@@ -76,6 +88,7 @@ const itineraryController = {
             let itinerary = await Itinerary.findOneAndRemove({ _id: id })
             if (itinerary) {
                 res.status(200).json({
+                    message: "itinerary deleted successfully!!",
                     success: true,
                 })
             } else {
