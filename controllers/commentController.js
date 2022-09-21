@@ -51,9 +51,6 @@ const commentController = {
         const updatedComment = req.body
         try {
             let commentCurrent = await Comment.findOne({_id : id})
-            console.log(commentCurrent.user)
-            console.log(commentId.valueOf())
-            console.log(commentCurrent.user === commentId)
             if (commentCurrent.user.valueOf() === commentId) {
                 await Comment.findOneAndUpdate({ _id: id }, updatedComment, { new: true })
                 res.status(200).json({
@@ -74,6 +71,32 @@ const commentController = {
             })
         }
 
+    },
+    deleteComment: async (req, res) => {
+        const { id } = req.params
+        const commentId = req.user.id.valueOf()
+        try {
+            let commentCurrent = await Comment.findOne({_id : id})
+            if (commentCurrent.user.valueOf() === commentId) {
+                await Comment.findOneAndRemove({ _id: id })
+                res.status(200).json({
+                    message: "comment eliminated successfully!!",
+                    success: true,
+                })
+            } else {
+                res.status(404).json({
+                    message: "could't find comment",
+                    success: false
+                })
+            }
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "error",
+                success: false
+            })
+        }
     }
 }
 
