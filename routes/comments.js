@@ -5,7 +5,7 @@ let passport = require('../config/passport')
 
 
 router.post('/', passport.authenticate('jwt', {session:false}), create)
-// router.patch('/', passport.authenticate('jwt', {session:false}), updateComment)
+router.patch('/', passport.authenticate('jwt', {session:false}), updateComment)
 router.get('/', readAll)
 
 module.exports = router;
