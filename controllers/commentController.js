@@ -5,7 +5,6 @@ const commentController = {
         let {id} = req.query
         let commentId = req.user.id
         let userComment = req.body.comment
-        console.log(userComment)
         try {
             await new Comment({comment: userComment, user: commentId, itinerary: id}).save()
             res.status(201).json({
@@ -48,10 +47,15 @@ const commentController = {
     },
     updateComment: async (req, res) => {
         const { id } = req.query
+        const commentId = req.user.id.valueOf()
         const updatedComment = req.body
         try {
-            let comment = await Comment.findOneAndUpdate({ _id: id }, updatedComment, { new: true })
-            if (comment) {
+            let commentCurrent = await Comment.findOne({_id : id})
+            console.log(commentCurrent.user)
+            console.log(commentId.valueOf())
+            console.log(commentCurrent.user === commentId)
+            if (commentCurrent.user.valueOf() === commentId) {
+                await Comment.findOneAndUpdate({ _id: id }, updatedComment, { new: true })
                 res.status(200).json({
                     message: "comment updated successfully!!",
                     success: true,
