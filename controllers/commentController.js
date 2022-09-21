@@ -2,10 +2,12 @@ const Comment = require('../models/Comment')
 
 const commentController = {
     create: async (req, res) => {
+        let {id} = req.query
+        let commentId = req.user.id
+        let userComment = req.body.comment
+        console.log(userComment)
         try {
-            console.log(req.body)
-
-            await new Comment(req.body).save()
+            await new Comment({comment: userComment, user: commentId, itinerary: id}).save()
             res.status(201).json({
                 success: true,
             })
@@ -43,6 +45,31 @@ const commentController = {
                 success: false
             })
         }
+    },
+    updateComment: async (req, res) => {
+        const { id } = req.query
+        const updatedComment = req.body
+        try {
+            let comment = await Comment.findOneAndUpdate({ _id: id }, updatedComment, { new: true })
+            if (comment) {
+                res.status(200).json({
+                    message: "comment updated successfully!!",
+                    success: true,
+                })
+            } else {
+                res.status(404).json({
+                    message: "could't find comment",
+                    success: false
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "error",
+                success: false
+            })
+        }
+
     }
 }
 
