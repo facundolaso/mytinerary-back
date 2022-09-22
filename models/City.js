@@ -6,6 +6,9 @@ const schema = new mongoose.Schema({
     photo:{type: String, required: true},
     population:{type: Number, required: true, min:1000, max:100000000},
     fundation:{type: Date, required: true},
+    latitude: {type: Number, required: true},
+    longitude: {type: Number, required: true},
+
 })
 
 const City = mongoose.model(
