@@ -7,8 +7,8 @@ const cityValidator = Joi.object({
         "photo": Joi.string().uri().message('INVALID_URL'),
         "population": Joi.number().integer().min(1000).max(100000000).message('INVALID_NUMBER'),
         "fundation": Joi.date(),
-        "latitude": Joi.number().min(1).message('INVALID_NUMBER'),
-        "longitude": Joi.number().min(1).message('INVALID_NUMBER'),
+        "latitude": Joi.number(),
+        "longitude": Joi.number(),
 })
 
 const cityController = {
