@@ -2,10 +2,11 @@ const Comment = require('../models/Comment')
 
 const commentController = {
     create: async (req, res) => {
+        let {id} = req.query
+        let commentId = req.user.id
+        let userComment = req.body.comment
         try {
-            console.log(req.body)
-
-            await new Comment(req.body).save()
+            await new Comment({comment: userComment, user: commentId, itinerary: id}).save()
             res.status(201).json({
                 success: true,
             })
@@ -40,6 +41,66 @@ const commentController = {
             console.log(error)
             res.status(404).json({
                 message: "Itinerary not found",
+                success: false
+            })
+        }
+    },
+    updateComment: async (req, res) => {
+        const { id } = req.query
+        const commentId = req.user.id.valueOf()
+        const updatedComment = req.body
+        try {
+            let commentCurrent = await Comment.findOne({_id : id})
+            console.log(commentCurrent)
+            if (commentCurrent.user.valueOf() === commentId) {
+                await Comment.findOneAndUpdate({ _id: id }, updatedComment, { new: true })
+                res.status(200).json({
+                    message: "comment updated successfully!!",
+                    success: true,
+                })
+            } else {
+                res.status(404).json({
+                    message: "could't find comment",
+                    success: false
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "error",
+                success: false
+            })
+        }
+
+    },
+    deleteComment: async (req, res) => {
+        const { id } = req.params
+        const commentId = req.user
+        try {
+            let commentCurrent = await Comment.findOne({_id : id})
+            if (commentCurrent.user.valueOf() === commentId.id.valueOf()) {
+                await Comment.findOneAndRemove({ _id: id })
+                res.status(200).json({
+                    message: "comment eliminated successfully!!",
+                    success: true,
+                })
+            } else if (commentId.role == "admin") {
+                await Comment.findOneAndRemove({ _id: id })
+                res.status(200).json({
+                    message: "comment eliminated successfully!!",
+                    success: true,
+                })
+            } else {
+                res.status(404).json({
+                    message: "could't find comment",
+                    success: false
+                })
+            }
+            
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({
+                message: "error",
                 success: false
             })
         }

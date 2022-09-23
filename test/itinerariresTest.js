@@ -57,3 +57,12 @@ describe('PATCH /itineraries', function () {
             .expect(200, done)
     })
 })
+
+describe('GET /itineraries', function () {
+    // test para la obtención de itinerarios
+    it('Must respond with 200 status code', function (done) {
+        request(app)
+            .get('/itineraries')
+            .expect(200, done)
+    })
+})

@@ -1,16 +1,18 @@
 const User = require('../models/User')
+const Itinerary = require('../models/Itinerary')
 const crypto = require('crypto')
 const bcryptjs = require('bcryptjs')
 const sendMail = require('./sendMail')
 const Joi = require('joi')
+const jwt = require('jsonwebtoken')
 
 const userValidator = Joi.object({
     "name": Joi.string().min(1).max(30).message('INVALID_NAME'),
-    "lastName":  Joi.string().min(1).max(30).message('INVALID_LASTNAME'),
+    "lastName": Joi.string().min(1).max(30).message('INVALID_LASTNAME'),
     "mail": Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).message('INVALID_MAIL'),
     "password": Joi.string().min(8).max(30).message('INVALID_PASSWORD'),
-    "photo":  Joi.string().uri().message('INVALID_URL'),
-    "country" : Joi.string().max(20).message('INVALID_COUNTRY'),
+    "photo": Joi.string().uri().message('INVALID_URL'),
+    "country": Joi.string().max(20).message('INVALID_COUNTRY'),
     "from": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
     "role": Joi.string().min(4).max(20).message('INVALID_COUNTRY'),
 })
@@ -19,7 +21,7 @@ const userValidator = Joi.object({
 const userController = {
     create: async (req, res) => {
         try {
-            
+
             await new User(req.body).save()
             res.status(201).json({
                 success: true,
@@ -36,8 +38,8 @@ const userController = {
         try {
 
             await userValidator.validateAsync(req.body)
-            let user = await User.findOne({mail})
-            if(!user){
+            let user = await User.findOne({ mail })
+            if (!user) {
 
                 let logged = false
                 let verified = false
@@ -56,7 +58,7 @@ const userController = {
                     let verified = true
                     user = await new User({ name, lastName, country, photo, mail, password: [password], role, from: [from], logged, verified, code }).save()
                     res.status(201).json({
-                        message: user.name + " signed up from "+ user.from,
+                        message: user.name + " signed up from " + user.from,
                         success: true,
                     })
 
@@ -75,7 +77,7 @@ const userController = {
                     user.password.push(password)
                     await user.save()
                     res.status(201).json({
-                        message: user.name + " signed up from "+ user.from,
+                        message: user.name + " signed up from " + user.from,
                         success: true
                     })
                 }
@@ -183,11 +185,12 @@ const userController = {
                         }
                         user.logged = true
                         await user.save()
-
+                        const token = jwt.sign({ id: user._id }, process.env.KEY_JWT, { expiresIn: 60 * 60 * 24 })
                         res.status(200).json({
                             success: true,
                             response: { user: logedUser },
-                            message: 'Welcome ' + user.name
+                            message: 'Welcome ' + user.name,
+                            token: token
                         })
                     } else {
                         res.status(400).json({
@@ -222,13 +225,13 @@ const userController = {
                     success: false,
                 })
             } else {
-                    user.logged = false
-                    await user.save()
-                    res.status(200).json({
-                        message: "See you soon " + user.name,
-                        success: true,
-                    })
-            } 
+                user.logged = false
+                await user.save()
+                res.status(200).json({
+                    message: "See you soon " + user.name,
+                    success: true,
+                })
+            }
         } catch (error) {
             console.log(error)
             res.status(400).json({
@@ -236,7 +239,7 @@ const userController = {
                 success: false
             })
         }
-    }
+    },
 }
 
 module.exports = userController
