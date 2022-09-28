@@ -164,7 +164,8 @@ const userController = {
                         res.status(200).json({
                             success: true,
                             response: { user: logedUser },
-                            message: 'Welcome ' + user.name
+                            message: 'Welcome ' + user.name,
+                            token: token
                         })
                     } else {
                         res.status(400).json({
